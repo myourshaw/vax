@@ -1,0 +1,228 @@
+2014-01-19 18:53:39 - Read configuration from /home/myourshaw/.vep/vep.ini
+#----------------------------------#
+# ENSEMBL VARIANT EFFECT PREDICTOR #
+#----------------------------------#
+
+version 74
+
+By Will McLaren (wm2@ebi.ac.uk)
+
+Configuration options:
+
+allele_number      1
+biotype            1
+cache              1
+canonical          1
+ccds               1
+check_alleles      1
+check_existing     1
+check_ref          1
+check_svs          1
+core_type          core
+database           1
+dir                /home/myourshaw/.vep
+dir_plugins        /home/myourshaw/.vep/Plugins
+domains            1
+force_overwrite    1
+gene               1
+gmaf               1
+hgvs               1
+host               cortex.local
+input_file         t.vcf
+maf_1kg            1
+maf_esp            1
+no_progress        1
+numbers            1
+output_file        t.vcf.cluster.allPlugins.vax
+password           ensembl
+plugin             vw,cortex.local,3306,vax,vax,mysql,vax_cluster_74	Alignment	Consequences	DiseasesPhenotypes	GeneIDs	HGMD,cortex.local,3306,hgmd,hgmd,mysql,hgmd_pro	HPA	KEGG	MousePhenotypes	OMIM	Phenotypes	Protein	UniProt	VCFCols	Carol	Condel,/home/myourshaw/.vep/Plugins/config/Condel/config,b,2	Conservation	GO	Grantham	FATHMM,python /home/myourshaw/.vep/Plugins/fathmm/fathmm.py	dbNSFP,/home/myourshaw/.vep/dbnsfp/dbNSFP.gz,Interpro_domain,SLR_test_statistic,SIFT_score_converted,LRT_score,LRT_score_converted,LRT_pred,MutationTaster_score,MutationTaster_score_converted,MutationTaster_pred,MutationAssessor_score,MutationAssessor_score_converted,MutationAssessor_pred,FATHMM_score_converted,FATHMM_pred,GERP++_NR,GERP++_RS,phyloP,29way_pi,29way_logOdds,LRT_Omega,1000Gp1_AC,1000Gp1_AF,1000Gp1_AFR_AC,1000Gp1_AFR_AF,1000Gp1_EUR_AC,1000Gp1_EUR_AF,1000Gp1_AMR_AC,1000Gp1_AMR_AF,1000Gp1_ASN_AC,1000Gp1_ASN_AF,ESP6500_AA_AF,ESP6500_EA_AF	ExtraCols
+polyphen           b
+port               3306
+protein            1
+pubmed             1
+regulatory         1
+sift               b
+species            homo_sapiens
+stats              HASH(0xd1eef0)
+symbol             1
+terms              SO
+user               ensembl
+verbose            1
+xref_refseq        0
+
+--------------------
+
+Will only load v74 databases
+Species 'homo_sapiens' loaded from database 'homo_sapiens_core_74_37'
+Species 'homo_sapiens' loaded from database 'homo_sapiens_cdna_74_37'
+Species 'homo_sapiens' loaded from database 'homo_sapiens_vega_74_37'
+Species 'homo_sapiens' loaded from database 'homo_sapiens_otherfeatures_74_37'
+Species 'homo_sapiens' loaded from database 'homo_sapiens_rnaseq_74_37'
+homo_sapiens_variation_74_37 loaded
+homo_sapiens_funcgen_74_37 loaded
+ensembl_compara_74 loaded
+ensembl_ancestral_74 loaded
+ensembl_ontology_74 loaded
+No production database or adaptor found
+ensembl_stable_ids_74 loaded
+2014-01-19 18:53:39 - Connected to core version 74 database and variation version 74 database
+2014-01-19 18:53:39 - Read existing cache info
+2014-01-19 18:53:39 - Loaded plugin: vw
+2014-01-19 18:53:42 - Loaded plugin: Alignment
+2014-01-19 18:53:42 - Loaded plugin: Consequences
+2014-01-19 18:53:42 - Fetching regulatory features for plugin: Consequences
+2014-01-19 18:53:42 - Loaded plugin: DiseasesPhenotypes
+2014-01-19 18:53:42 - Loaded plugin: GeneIDs
+2014-01-19 18:53:42 - Fetching regulatory features for plugin: GeneIDs
+2014-01-19 18:53:42 - Loaded plugin: HGMD
+2014-01-19 18:53:42 - Fetching regulatory features for plugin: HGMD
+2014-01-19 18:53:42 - Loaded plugin: HPA
+2014-01-19 18:53:42 - Fetching regulatory features for plugin: HPA
+2014-01-19 18:53:42 - Loaded plugin: KEGG
+2014-01-19 18:53:42 - Fetching regulatory features for plugin: KEGG
+2014-01-19 18:53:42 - Loaded plugin: MousePhenotypes
+2014-01-19 18:53:42 - Fetching regulatory features for plugin: MousePhenotypes
+2014-01-19 18:53:42 - Loaded plugin: OMIM
+2014-01-19 18:53:42 - Fetching regulatory features for plugin: OMIM
+2014-01-19 18:53:42 - Loaded plugin: Phenotypes
+2014-01-19 18:53:42 - Fetching regulatory features for plugin: Phenotypes
+2014-01-19 18:53:42 - Loaded plugin: Protein
+2014-01-19 18:53:42 - Loaded plugin: UniProt
+2014-01-19 18:53:42 - Loaded plugin: VCFCols
+2014-01-19 18:53:42 - Fetching regulatory features for plugin: VCFCols
+2014-01-19 18:53:42 - Loaded plugin: Carol
+2014-01-19 18:53:42 - Loaded plugin: Condel
+2014-01-19 18:53:42 - Loaded plugin: Conservation
+2014-01-19 18:53:42 - Fetching regulatory features for plugin: Conservation
+Will only load v74 databases
+Species 'homo_sapiens' loaded from database 'homo_sapiens_core_74_37'
+Species 'homo_sapiens' loaded from database 'homo_sapiens_cdna_74_37'
+Species 'homo_sapiens' loaded from database 'homo_sapiens_vega_74_37'
+Species 'homo_sapiens' loaded from database 'homo_sapiens_otherfeatures_74_37'
+Species 'homo_sapiens' loaded from database 'homo_sapiens_rnaseq_74_37'
+homo_sapiens_variation_74_37 loaded
+homo_sapiens_funcgen_74_37 loaded
+ensembl_compara_74 loaded
+ensembl_ancestral_74 loaded
+ensembl_ontology_74 loaded
+No production database or adaptor found
+ensembl_stable_ids_74 loaded
+2014-01-19 18:53:42 - Loaded plugin: GO
+2014-01-19 18:53:42 - Loaded plugin: Grantham
+2014-01-19 18:53:42 - Loaded plugin: FATHMM
+2014-01-19 18:53:42 - Loaded plugin: dbNSFP
+2014-01-19 18:53:42 - Loaded plugin: ExtraCols
+2014-01-19 18:53:42 - Fetching regulatory features for plugin: ExtraCols
+2014-01-19 18:53:43 - INFO: Database will be accessed when using --hgvs
+2014-01-19 18:53:43 - INFO: Database will be accessed when using --check_ref
+2014-01-19 18:53:43 - Starting...
+2014-01-19 18:53:45 - Detected format of input file as vcf
+2014-01-19 18:53:46 - Read 148 variants into buffer
+2014-01-19 18:53:46 - Checking for existing variations
+2014-01-19 18:55:25 - Checking for overlapping structural variations
+2014-01-19 18:55:55 - Reading transcript data from cache and/or database
+2014-01-19 18:56:05 - Retrieved 11181 transcripts (0 mem, 11276 cached, 0 DB, 95 duplicates)
+2014-01-19 18:56:05 - Reading regulatory data from cache and/or database
+2014-01-19 18:56:10 - Retrieved 40863 regulatory features (0 mem, 40865 cached, 0 DB, 2 duplicates)
+2014-01-19 18:56:10 - Analyzing chromosome 1
+2014-01-19 18:56:10 - Analyzing variants
+2014-01-19 18:56:11 - Analyzing RegulatoryFeatures
+2014-01-19 18:56:11 - Analyzing MotifFeatures
+2014-01-19 18:56:11 - Calculating consequences
+2014-01-19 18:58:27 - Analyzing chromosome 2
+2014-01-19 18:58:27 - Analyzing variants
+2014-01-19 18:58:27 - Analyzing RegulatoryFeatures
+2014-01-19 18:58:27 - Analyzing MotifFeatures
+2014-01-19 18:58:27 - Calculating consequences
+2014-01-19 18:59:21 - Analyzing chromosome 3
+2014-01-19 18:59:21 - Analyzing variants
+2014-01-19 18:59:21 - Analyzing MotifFeatures
+2014-01-19 18:59:21 - Analyzing RegulatoryFeatures
+2014-01-19 18:59:21 - Calculating consequences
+2014-01-19 18:59:47 - Analyzing chromosome 4
+2014-01-19 18:59:47 - Analyzing variants
+2014-01-19 18:59:47 - Analyzing MotifFeatures
+2014-01-19 18:59:47 - Analyzing RegulatoryFeatures
+2014-01-19 18:59:47 - Calculating consequences
+2014-01-19 18:59:50 - Analyzing chromosome 5
+2014-01-19 18:59:50 - Analyzing variants
+2014-01-19 18:59:50 - Analyzing RegulatoryFeatures
+2014-01-19 18:59:50 - Analyzing MotifFeatures
+2014-01-19 18:59:50 - Calculating consequences
+2014-01-19 19:00:02 - Analyzing chromosome 6
+2014-01-19 19:00:02 - Analyzing variants
+2014-01-19 19:00:02 - Analyzing MotifFeatures
+2014-01-19 19:00:02 - Analyzing RegulatoryFeatures
+2014-01-19 19:00:02 - Calculating consequences
+2014-01-19 19:00:54 - Analyzing chromosome 7
+2014-01-19 19:00:54 - Analyzing variants
+2014-01-19 19:00:54 - Analyzing MotifFeatures
+2014-01-19 19:00:54 - Analyzing RegulatoryFeatures
+2014-01-19 19:00:54 - Calculating consequences
+2014-01-19 19:01:11 - Analyzing chromosome 9
+2014-01-19 19:01:11 - Analyzing variants
+2014-01-19 19:01:11 - Analyzing MotifFeatures
+2014-01-19 19:01:11 - Analyzing RegulatoryFeatures
+2014-01-19 19:01:11 - Calculating consequences
+2014-01-19 19:02:46 - Analyzing chromosome 10
+2014-01-19 19:02:46 - Analyzing variants
+2014-01-19 19:02:46 - Analyzing RegulatoryFeatures
+2014-01-19 19:02:46 - Analyzing MotifFeatures
+2014-01-19 19:02:46 - Calculating consequences
+2014-01-19 19:02:54 - Analyzing chromosome 11
+2014-01-19 19:02:54 - Analyzing variants
+2014-01-19 19:02:54 - Analyzing RegulatoryFeatures
+2014-01-19 19:02:54 - Analyzing MotifFeatures
+2014-01-19 19:02:54 - Calculating consequences
+2014-01-19 19:03:09 - Analyzing chromosome 12
+2014-01-19 19:03:09 - Analyzing variants
+2014-01-19 19:03:09 - Analyzing MotifFeatures
+2014-01-19 19:03:09 - Analyzing RegulatoryFeatures
+2014-01-19 19:03:09 - Calculating consequences
+2014-01-19 19:03:40 - Analyzing chromosome 14
+2014-01-19 19:03:40 - Analyzing variants
+2014-01-19 19:03:40 - Analyzing RegulatoryFeatures
+2014-01-19 19:03:40 - Analyzing MotifFeatures
+2014-01-19 19:03:40 - Calculating consequences
+2014-01-19 19:04:49 - Analyzing chromosome 16
+2014-01-19 19:04:49 - Analyzing variants
+2014-01-19 19:04:49 - Analyzing RegulatoryFeatures
+2014-01-19 19:04:49 - Analyzing MotifFeatures
+2014-01-19 19:04:49 - Calculating consequences
+2014-01-19 19:04:56 - Analyzing chromosome 17
+2014-01-19 19:04:56 - Analyzing variants
+2014-01-19 19:04:56 - Analyzing RegulatoryFeatures
+2014-01-19 19:04:56 - Analyzing MotifFeatures
+2014-01-19 19:04:56 - Calculating consequences
+2014-01-19 19:05:14 - Analyzing chromosome 19
+2014-01-19 19:05:14 - Analyzing variants
+2014-01-19 19:05:14 - Analyzing RegulatoryFeatures
+2014-01-19 19:05:14 - Analyzing MotifFeatures
+2014-01-19 19:05:14 - Calculating consequences
+2014-01-19 19:05:29 - Analyzing chromosome 20
+2014-01-19 19:05:29 - Analyzing variants
+2014-01-19 19:05:29 - Analyzing MotifFeatures
+2014-01-19 19:05:29 - Analyzing RegulatoryFeatures
+2014-01-19 19:05:29 - Calculating consequences
+2014-01-19 19:05:51 - Analyzing chromosome 22
+2014-01-19 19:05:51 - Analyzing variants
+2014-01-19 19:05:51 - Analyzing RegulatoryFeatures
+2014-01-19 19:05:51 - Analyzing MotifFeatures
+2014-01-19 19:05:51 - Analyzing structural variations
+2014-01-19 19:05:51 - Calculating consequences
+2014-01-19 19:08:35 - Analyzing chromosome MT
+2014-01-19 19:08:35 - Analyzing variants
+2014-01-19 19:08:35 - Calculating consequences
+2014-01-19 19:10:03 - Analyzing chromosome X
+2014-01-19 19:10:03 - Analyzing variants
+2014-01-19 19:10:03 - Analyzing RegulatoryFeatures
+2014-01-19 19:10:03 - Analyzing MotifFeatures
+2014-01-19 19:10:03 - Calculating consequences
+2014-01-19 19:10:49 - Analyzing chromosome Y
+2014-01-19 19:10:49 - Analyzing variants
+2014-01-19 19:10:49 - Analyzing RegulatoryFeatures
+2014-01-19 19:10:49 - Analyzing MotifFeatures
+2014-01-19 19:10:49 - Calculating consequences
+2014-01-19 19:10:59 - Processed 148 total variants (0 vars/sec, 0 vars/sec total)
+2014-01-19 19:10:59 - Wrote stats summary to t.vcf.cluster.allPlugins.vax_summary.html
+2014-01-19 19:10:59 - Finished!

@@ -1,0 +1,309 @@
+VAX ( Variant Effect Predictor eXtras)
+
+Methods for using the plug-in capability of the Ensembl Variant Effect Predictor (VEP) to enrich its basic set of
+variant annotations with additional data on genes, function, conservation, expression, diseases, pathways, and protein
+structure.
+
+REFERENCE
+
+Yourshaw M et al. Rich Annotation of DNA Sequencing Variants by Leveraging the Ensembl Variant Effect Predictor with
+Plugins
+
+QUICKSTART (assumes preexisting intall of VEP and all prerequisites)
+
+tar xvzf VAX_DIR.tar.gz;
+cd VAX_DIR;
+bash INSTALL [-h HOST] [-P PORT];
+
+perl variant_effect_predictor.pl -i input.vcf -o output.txt;
+
+PREREQUISITES
+
+* Internet connection.
+
+* Perl. Perl v5.16 and v5.18 have been tested. Depending on your installation it may be necessary to install DBI,
+DBD::mysql, SWISS::Knife (from http://sourceforge.net/projects/swissknife/files/latest/download), and other Perl
+modules.
+
+* Python. Python version 2.7.5 has been tested.
+
+* MySQL client.  Mac OS X Maverics with MySql Ver 14.14 Distrib 5.6.15, for osx10.7 (x86_64) using  EditLine wrapper and
+CentOS release 6.2  with MySQL Ver 14.14 Distrib 5.1.67, for redhat-linux-gnu (x86_64) using readline 5.1 have been
+tested. (On Mac OS X Maverics, it may be necessary to run "sudo ln -s /usr/local/mysql/lib/libmysqlclient.18.dylib
+/usr/lib/libmysqlclient.18.dylib").
+
+* MySQL server (local or remote). MySQL Server version: 5.1.67 has been tested.
+
+* The Ensembl Variant Effect Predictor and Ensembl Perl API. See
+http://www.ensembl.org/info/docs/tools/vep/script/index.html. Version 74 has been tested. Although the experimental -e
+option of the installer will download and run the VEP installer, the limited subset of the Perl API will not work well
+with all plugins, and the fasta file may have inconsistent reference alleles at some loci. 
+
+* The VEP cache and/or Ensembl databases. Some plugins, such as Alignment and Protein, require a local Ensembl MySQL
+database for best performance, and the fasta file may have inconsistent reference alleles at some loci.
+
+* References in the PERL5LIB environment variable to: the Ensembl API modules, a version of BioPerl compatible with the
+Ensembl API, Bio::Matrix::IO from a current BioPerl version, and Swissknife/lib.
+
+* Almost all VAX plugins require the VAX.pm module in the Plugins directory
+
+* VAX plugins that rely on a local MySQL database (e.g. KEGG, OMIM, ...) require the vw.pm plugin in the Plugins
+directory
+
+* In the vep.ini config file or VEP command line, the ExtraCols plugin must be specified after all plugins (e.g.,
+Condel, GO) that insert data into EXTRAS, if a separate column for that data is wanted.
+
+INSTALLATION
+
+tar xvzf VAX_DIR.tar.gz;
+cd VAX_DIR;
+
+#for options run:
+	bash INSTALL -?
+	
+#to run installer with defaults (~1 hour):
+	bash INSTALL [-h HOST] [-P PORT]
+	
+#to run installer with additional downloads (very long runtime ~>1 day if -S used):
+	bash INSTALL [-h HOST] [-P PORT] -X -e 74 -I -i -a c -F -S 2.1;
+
+Options:
+    [-h] <msyql_host> (default: ${HOST})
+    [-P] <mysql_port> (default: ${PORT})
+    [-u] <mysql_install_user> (default: enter at prompt)
+    [-p] <mysql_install_password> (default: enter silently at prompt)
+    [-d] <mysql_database> (default: ${DATABASE}) EXISTING DATABASE WILL BE OVERWRITTEN!
+    [-U] <mysql user for runtime access to database> (default: ${VAX_USER})
+    [-W] <mysql password for runtime access> (default: ${VAX_PW})
+    [-v] </path/to/.vep directory> (default: ${VEP_DIR})
+    [-D] </path/to/vax_downloads directory> (default: ${DOWNLOAD_DIR})
+    [-X] (install VEP_plugins downloaded from git; default: ${INSTALL_VEP_PLUGINS} = do not download/install; beta
+		test-not a supported VAX function)
+    [-e] <version of Ensembl API/VEP/cache to install> (default: ${VEP_VERSION} = do not download/install)
+    [-E] <VEP destination directory for Ensembl API and Variant Effect Predictor> (default: ${VEP_DESTDIR})
+    [-I] (run VEP installer to download and install subset of Ensembl API, cache, and fasta; requires -e; default:
+		${INSTALL_VEP} = do not download/install; beta test-not a supported VAX function)
+    [-i] (download the entire Ensembl Perl API, and a current version of BioPerl; requires -e; default:
+		${INSTALL_ENSEMBL_API} = do not download; beta test-not a supported VAX function. WARNING: The full Ensembl API
+		 and a current version of BioPerl may be required by some VAX plugins.)
+    [-b] <version of BioPerl to download> (default: ${BIOPERL_VERSION}; requires -e and -i)
+    [-a] (VEP --AUTO parameters; Run VEP installer without user prompts. Use a (API), c (cache), f (FASTA) to specify
+		parts to install e.g., -a ac for API and cache; -a for cache only is recommended for VAX unless cashe is already
+		installed; default: None)
+    [-s] (VEP --SPECIES parameters; Comma-separated list of species to install when using --AUTO; default: homo_sapiens)
+    [-F] (download and install FATHMM database; default: ${DOWNLOAD_FATHMM} = do not download/install; beta test-not a
+		supported VAX function)
+    [-S] <version of dbNSFP to download> (large ~3Gb; default: ${DOWNLOAD_DBNSFP_VERSION} = do not download/install; 
+		beta test-not a supported VAX function)
+    [-g] <mysql user for runtime access to hgmd_pro> (default: ${HGMD_USER})
+    [-G] <mysql password for runtime access to hgmd_pro> (default: ${HGMD_PW})
+    [-x] (do not download any files; assumes all files exist in ${DOWNLOAD_DIR} and have been pre-processed as needed;
+		default: ${DOWNLOAD} = do download/install)
+    [-y] (do not install MySQL database ${DATABASE}; default: ${INSTALL_DB} = do download/install)
+    [-z] (do not create ${VEP_DIR}, ${CONFIG_FILE}, and ${PLUGINS_DIR}; default: ${INSTALL_VAX_PLUGINS} = do
+		download/install)
+    [-?] (print this usage info and exit)"
+
+By default the installer will:
+
+* create a MySQL database named `vax` on localhost:3306. The user 'vax'@'%' IDENTIFIED BY 'vax' will have all privileges
+on this database.
+
+* download data, create MySQL tables and stored procedures, and install plugins (in ${HOME}/.vep/Plugins) for UniProt,
+KEGG, Human Protein Atlas, MitoCarta, Mouse Phenotypes, OMIM, and RefSeq.
+
+* install the Alignment, Consequences, DiseasesPhenotypes, ExtraCols, GeneIDs, Phenotypes, Protein, VAX, and vw plugins
+and the VAX module (in ${HOME}/.vep/Plugins).
+
+* create a VEP configuration file to invoke these plugins (${HOME}/.vep/vep.ini).
+
+* Install the HGMD plugin, which requires the commercial HGMD pro database and the stored procedures listed in the
+plugin.
+
+The installer will produce a vep.ini configuration file that will proviede database connection parameters needed by the
+vw.pm plugin. The user may need to update these parameters, or use the parameters when calling vw.pm from the command
+line.
+
+PERL5LIB must contain a reference to the directory that contains the VAX plugins. For example, add the following to
+~/.bashrc:
+	export PERL5LIB="${HOME}/.vep/Plugins:${PERL5LIB}" 
+
+The installer includes unsupported beta features, not described in the VAX paper, to download and install the Ensembl
+API and VEP cache, as well as the example VEP plugins (and the data for FATHMM and dbSNFP) from
+https://github.com/ensembl-variation/VEP_plugins.git.
+
+PASSWORDS
+
+The installer uses passwords in the command line for database creation and access. The MySQL 5.6 client generates a
+warning, which may be ignored depending on your security concerns. For more information and possible workarounds, see
+    http://bugs.mysql.com/bug.php?id=66546
+and
+    http://akrabat.com/software/password-less-command-line-scripts-with-mysql-5-6/
+The MySql user and password for runtime access will be in the vep.ini file. Remove all options with passwords and use
+the command line or other measures if security is a concern.
+
+PLUGINS
+
+Documentation for each plugin is in the individual <Plugin>.pm file.
+
+FILES
+
+VAX_DIR [distribution]
+	cvs2tab.py [Convert csv file to tab-delimited (used by INSTALL)]
+	download_dbnsfp_data.sh [Shell script to download files for the Ensembl example dbNSFP plugin]
+	download_ensembl_databases.sh [Shell script to download Ensembl databases from FTP site]
+	download_fathmm_data.sh [Shell script to download files for the Ensembl example FATHMM plugin]
+	download_hpa_data.sh [Shell script to download tables from Human Protein Atlas]
+	download_kegg_data.pl [ Perl script to download KEGG pathways data]
+	download_mgi_data.sh [Shell script to download mouse phenotype data from MGI]
+	download_omim_data.sh [Shell script to download OMIM data]
+	download_refseq_data.sh [Shell script to download RefSeq data]
+	download_uniprot_data.sh [Shell script to download UniProt data]
+	ensembl_xref2db.pl [Perl script to create Ensembl cross-reference table for genes, transcripts, and proteins]
+	examples
+		Mito_example.pm [Mito example plugin Perl module (illustrative only)]
+		ProteinSeq_example.pm [ProteinSeq example plugin Perl module (illustrative only)]
+	HumanMitoCartaAll.sql [MySQL table structure for HumanMitoCartaAll]
+	HumanMitoCartaAll.txt [HumanMitoCartaAll table from
+		http://www.broadinstitute.org/pubs/MitoCarta/human.mitocarta.html]
+	INSTALL [Bash shell installation script for VAX plugins and data (must remain in the same directory as Plugins and
+		other scripts)]
+	LICENSE.txt [GNU General Public License v 2]
+	MGI_mouse_phenotype_files.py [Python script to convert downloaded Mouse Genome Informatics phenotype data to
+		database tables]
+	my.py [Common python functions used by python scripts (must be in same directory as the scripts)]
+	mysql_table.py [Python script to generate MySQL CREATE TABLE scripts]
+	omim2db.py [Python script to convert downloaded OMIM data to database tables]
+	Plugins
+		Alignment.pm [Alignment plugin Perl module]
+		blosum62.mat [Scoring matrix for Alignment.pm]
+		Consequences.pm [Consequences plugin Perl module]
+		DiseasesPhenotypes.pm [DiseasesPhenotypes plugin Perl module]
+		ExtraCols.pm [ExtraCols plugin Perl module]
+		GeneIDs.pm [GeneIDs plugin Perl module]
+		henotypes.pm [Phenotypes plugin Perl module]
+		HGMD.pm [HGMD plugin Perl module (requires access to a local copy of the commercial HGMD pro database)]
+		HPA.pm [HPA plugin Perl module]
+		KEGG.pm [KEGG plugin Perl module]
+		MousePhenotypes.pm [Mouse Phenotypes plugin Perl module]
+		OMIM.pm [OMIM plugin Perl module]
+		Protein.pm [Protein plugin Perl module]
+		UniProt.pm [UniProt plugin Perl module]
+		vax.pm [VAX common functions Perl module]
+		VCFCols.pm [VCFCols plugin Perl module]
+		vw.pm [MySQL connector plugin Perl module]
+	README [Readme file for the installer]
+	refgene2db.py [Python script to convert downloaded RefGene data to RefSeq gene summary database table]
+	test
+		t.vcf [VEP test input file]
+		t.vcf.cluster.allPlugins.vax [VEP test output]
+		t.vcf.cluster.allPlugins.vax_summary.html [VEP test summary]
+		t.vcf.cluster.allPlugins.vax.STDOUT [VEP test STDOUT]
+	uniprot2db.pl [Perl script to download UniProt data and convert to database tables]
+
+The installer, with all options, will create a directory structure similar to this:
+
+~ [home directory]
+	.vep
+		dbnsfp
+			[dbNSFP plugin data]
+		homo_sapiens [VEP cache]
+			74 [VEP/Ensembl database version]
+				[it is recommended not to download the fasta file due to Ref conflicts]
+				1 [chromoaomes]
+				...
+				Y
+		Plugins
+			Alignment.pm
+			AlleleFrequencies.pm
+			Blosum62.pm
+			CCDSFilter.pm
+			Carol.pm
+			Condel.pm
+			Consequences.pm
+			Conservation.pm
+			DAS.pm
+			DiseasesPhenotypes.pm
+			Downstream.pm
+			Draw.pm
+			EthnicAlleleFrequencies.pm
+			ExtraCols.pm
+			ExtraCols_20130105.pm
+			ExtraCols_20130107.pm
+			FATHMM.pm
+			GO.pm
+			GeneIDs.pm
+			GenotypeFile.pm
+			GenotypeStats.pm
+			GetIDtemp.pl
+			Grantham.pm
+			HGMD.pm
+			HPA.pm
+			KEGG.pm
+			LD.pm
+			LICENSE
+			LOVD.pm
+			MousePhenotypes.pm
+			NonSynonymousFilter.pm
+			OMES.pm
+			OMES_score.pl
+			OMIM.pm
+			Phenotypes.pm
+			Protein.pm
+			ProteinSeqs.pm
+			README
+			RankFilter.pm
+			SameCodon.pm
+			TSSDistance.pm
+			UniProt.pm
+			UpDownDistance.pm
+			VAX.pm
+			VCFCols.pm
+			VEPbrowse.pm
+			blosum62.mat
+			config
+				Condel
+					config
+						condel_SP.conf
+					methdist
+						polyphen.data
+						sift.data
+						test_condel_SP.data
+			dbNSFP.pm
+			fathmm
+				config.in
+				fathmm.py
+			vw.pm
+		vep.ini [parameters]
+	vax_downloads
+		dbnsfp
+			[dbnsfp files]
+		ensembl_plugin_git
+			VEP_plugins
+				[example plugin files]
+		hpa
+			[hpa files]
+		kegg
+			[kegg files]
+		mgi
+			[mgi files]
+		omim
+			[omim files]
+		refseq
+			[refseq files]
+		uniprot
+			[uniprot files]
+	VEP
+		[BIO]
+			[VEP subset of Ensembl API and BioPerl. It is suggested that you NOT download nor link to this directory in
+			PERL5LIB. The full Ensembl API and a a current version of BioPerl should be used with VAX plugins instead of
+			 these files.]
+		bioperl-live -> bioperl-release-1-6-923
+		bioperl-release-1-6-923
+			[BioPerl files]
+		ensembl -> ensembl-74
+		ensembl-74
+			[Ensembl Perl API files]
+		variant_effect_predictor
+			[VEP installer files]
+			variant_effect_predictor.pl
