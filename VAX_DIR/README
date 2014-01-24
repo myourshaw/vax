@@ -34,6 +34,8 @@ tested. (On Mac OS X Maverics, it may be necessary to run "sudo ln -s /usr/local
 
 * MySQL server (local or remote). MySQL Server version: 5.1.67 has been tested.
 
+* NcFTP/NcFTPGet (http://www.ncftp.com/ncftp/). The installer requires that the ncftpget executable be in the PATH.
+
 * The Ensembl Variant Effect Predictor and Ensembl Perl API. See
 http://www.ensembl.org/info/docs/tools/vep/script/index.html. Version 74 has been tested. Although the experimental -e
 option of the installer will download and run the VEP installer, the limited subset of the Perl API will not work well

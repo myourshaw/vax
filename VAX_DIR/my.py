@@ -13,7 +13,6 @@ import collections
 import argparse
 from ConfigParser import SafeConfigParser
 import csv
-import pysam
 import subprocess
 
 def file_len(fname):
@@ -107,12 +106,6 @@ def open_gz_or_text(filename):
 		return gzip.open(filename, 'r')
 	else:
 		return open(filename, 'r')
-
-def open_bam(filename):
-	if is_gz(filename):
-		return pysam.Samfile(filename, "rb")
-	else:
-		return pysam.Samfile(filename, "r")
 
 def unique_dir(prefix='', dir=os.path.join(os.path.expanduser('~'),'tmp')):
 	makedir(dir)
@@ -220,14 +213,6 @@ def print_err(s):
 
 def rcut(string, cut):
     return re.sub()
-
-def bam_strip(string):
-    s = string[:-3] if string.endswith('.gz') else string
-    return s[:-4] if s.endswith('.bam') or s.endswith('.sam') else s
-
-def qseq_strip(string):
-    s = string[:-3] if string.endswith('.gz') else string
-    return s[:-9] if s.endswith('_qseq.txt') else s
 
 def vcf_strip(string):
     s = string[:-3] if string.endswith('.gz') else string
