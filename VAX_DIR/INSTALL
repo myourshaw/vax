@@ -61,11 +61,12 @@ VAX_PW=vax;
 VEP_DIR=${HOME}/.vep;
 CONFIG_FILE=${VEP_DIR}/vep.ini;
 PLUGINS_DIR=${VEP_DIR}/Plugins;
-VEP_VERSION=0; #74
+ENSEMBL_VERSION=0; #74
 VEP_DESTDIR=${HOME}/VEP;
 VEP_CACHEDIR=${VEP_DIR};
 INSTALL_VEP=0;
 INSTALL_ENSEMBL_API=0;
+INSTALL_ENSEMBL_DATABASES=0
 BIOPERL_VERSION="release-1-6-923";
 VEP_AUTO=;
 VEP_SPECIES="--SPECIES homo_sapiens";
@@ -92,10 +93,11 @@ Options:
     [-v] </path/to/.vep directory> (default: ${VEP_DIR})
     [-D] </path/to/vax_downloads directory> (default: ${DOWNLOAD_DIR})
     [-X] (install VEP_plugins downloaded from git; default: ${INSTALL_VEP_PLUGINS} = do not download/install; beta test-not a supported VAX function)
-    [-e] <version of Ensembl API/VEP/cache to install> (default: ${VEP_VERSION} = do not download/install)
+    [-e] <version of Ensembl API/VEP/cache to install> (default: ${ENSEMBL_VERSION} = do not download/install)
     [-E] <VEP destination directory for Ensembl API and Variant Effect Predictor> (default: ${VEP_DESTDIR})
     [-I] (run VEP installer to download and install subset of Ensembl API, cache, and fasta; requires -e; default: ${INSTALL_VEP} = do not download/install; beta test-not a supported VAX function)
     [-i] (download the entire Ensembl Perl API, and a current version of BioPerl; requires -e; default: ${INSTALL_ENSEMBL_API} = do not download; beta test-not a supported VAX function. WARNING: The full Ensembl API and a current version of BioPerl may be required by some VAX plugins.)
+    [-J] (download and install ensembl_ and homo_asapiens_ databases; default: ${INSTALL_ENSEMBL_DATABASES} = do ot install.)
     [-b] <version of BioPerl to download> (default: ${BIOPERL_VERSION}; requires -e and -i)
     [-a] (VEP --AUTO parameters; Run VEP installer without user prompts. Use a (API), c (cache), f (FASTA) to specify parts to install e.g., -a ac for API and cache; -a for cache only is recommended for VAX unless cashe is already installed; default: None)
     [-s] (VEP --SPECIES parameters; Comma-separated list of species to install when using --AUTO; default: homo_sapiens)
@@ -113,7 +115,7 @@ usage() {
     1>&2; exit 1;
 }
 
-while getopts ":h:P:u:p:d:U:W:v:D:Xe:E:Iiba:s:FS:g:G:xyz" o; do
+while getopts ":h:P:u:p:d:U:W:v:D:Xe:E:IiJba:s:FS:g:G:xyz" o; do
     case "${o}" in
         h)  HOST="${OPTARG}" ;;
         P)  PORT="${OPTARG}" ;;
@@ -125,10 +127,11 @@ while getopts ":h:P:u:p:d:U:W:v:D:Xe:E:Iiba:s:FS:g:G:xyz" o; do
         v)  VEP_DIR="${OPTARG}" ;;
         D)  DOWNLOAD_DIR="${OPTARG}" ;;
         X)  INSTALL_VEP_PLUGINS=1 ;;
-        e)  VEP_VERSION="${OPTARG}" ;;
+        e)  ENSEMBL_VERSION="${OPTARG}" ;;
         E)  VEP_DESTDIR="${OPTARG}" ;;
         I)  INSTALL_VEP=1 ;;
         i)  INSTALL_ENSEMBL_API=1 ;;
+        J)  INSTALL_ENSEMBL_DATABASES=1 ;;
         b)  BIOPERL_VERSION="${OPTARG}" ;;
         a)  VEP_AUTO="--AUTO ${OPTARG}" ;;
         s)  VEP_SPECIES="--SPECIES ${OPTARG}" ;;
@@ -190,7 +193,7 @@ MYSQL="$(which mysql) -h ${HOST} -P ${PORT} --user=${USER} -p${PASSWORD}";
 MYSQLIMPORT="$(which mysqlimport) -h ${HOST} -P ${PORT} --user=${USER} -p${PASSWORD}";
 
 #directories
-ENSEMBL_API_DIR=${VEP_DESTDIR}/ensembl-${VEP_VERSION};
+ENSEMBL_API_DIR=${VEP_DESTDIR}/ensembl-${ENSEMBL_VERSION};
 BIOPERL_DIR=${VEP_DESTDIR}/bioperl-${BIOPERL_VERSION};
 
 echo; echo;
@@ -207,7 +210,7 @@ Parameters:
     VEP_DIR (-v) = ${VEP_DIR}
     CONFIG_FILE = ${CONFIG_FILE}
     PLUGINS_DIR = ${PLUGINS_DIR}
-    VEP_VERSION (-e) = ${VEP_VERSION}
+    ENSEMBL_VERSION (-e) = ${ENSEMBL_VERSION}
     VEP_DESTDIR (-E) = ${VEP_DESTDIR}
     VEP_CACHEDIR = ${VEP_CACHEDIR}
     INSTALL_VEP (-I) = ${INSTALL_VEP}
@@ -237,9 +240,9 @@ fi
 
 echo;
 if [[ ${INSTALL_DB} != 1 ]]; then
-    echo "  MySql database will not be installed";
+    echo "  MySql database for VAX plugins will not be installed";
 else
-    echo "  MySql database ${DATABASE} will be installed.";
+    echo "  MySql database ${DATABASE} for VAX pluginswill be installed.";
     echo "    ANY EXISTING ${DATABASE} DATABASE WILL BE DELETED AND REPLACED!";
     echo "    If you want to download data but not install the database, use the -y option."
 fi
@@ -274,7 +277,7 @@ if [[ ${INSTALL_VEP_PLUGINS} == 1 ]]; then
 fi
 
 echo;
-if [[ ${VEP_VERSION} != 0 ]]; then
+if [[ ${ENSEMBL_VERSION} != 0 ]]; then
     echo;
     echo "The Variant Effect Predictor script will be downloaded as:
     ${VEP_DESTDIR}/variant_effect_predictor/variant_effect_predictor.pl"
@@ -287,7 +290,7 @@ if [[ ${VEP_VERSION} != 0 ]]; then
     fi
     if [[ ${INSTALL_ENSEMBL_API} == 1 ]]; then
         echo;
-        echo "Version ${VEP_VERSION} of the Ensembl Perl API will be downloaded to ${ENSEMBL_API_DIR}.";
+        echo "Version ${ENSEMBL_VERSION} of the Ensembl Perl API will be downloaded to ${ENSEMBL_API_DIR}.";
         echo "BioPerl ${BIOPERL_VERSION} will be downloaded to ${BIOPERL_DIR}.";        
     else
         echo "The Ensembl Perl API and BioPerl will not be downloaded.";
@@ -349,7 +352,7 @@ if [[ ${INSTALL_VAX_PLUGINS} == 1 ]]; then
     echo "  ${PLUGINS_DIR}";
     mkdir -p ${PLUGINS_DIR};
 fi
-if [[ ${VEP_VERSION} != 0 ]]; then
+if [[ ${ENSEMBL_VERSION} != 0 ]]; then
     echo "  ${VEP_DESTDIR}";
     mkdir -p ${VEP_DESTDIR};
     echo "  ${VEP_CACHEDIR}";
@@ -388,7 +391,7 @@ fi
 ################################################################################
 
 BAK_SUFFIX="_"$(date +%Y%m%d%H%M%S);
-if [[ ${VEP_VERSION} != 0 ]]; then
+if [[ ${ENSEMBL_VERSION} != 0 ]]; then
     echo;
     log "Downloading and installing Variant Effect Predictor to ${VEP_DESTDIR}";
     log "The Variant Effect Predictor executable will be installed at:";
@@ -400,7 +403,7 @@ if [[ ${VEP_VERSION} != 0 ]]; then
     mkdir -p ${VEP_DESTDIR};
     mkdir -p ${VEP_CACHEDIR};
     this_dir=$(pwd); cd ${VEP_DESTDIR};
-    curl "http://cvs.sanger.ac.uk/cgi-bin/viewvc.cgi/ensembl-tools/scripts/variant_effect_predictor.tar.gz?view=tar&root=ensembl&pathrev=branch-ensembl-${VEP_VERSION} -o -" | tar xvz -C ${VEP_DESTDIR};
+    curl "http://cvs.sanger.ac.uk/cgi-bin/viewvc.cgi/ensembl-tools/scripts/variant_effect_predictor.tar.gz?view=tar&root=ensembl&pathrev=branch-ensembl-${ENSEMBL_VERSION} -o -" | tar xvz -C ${VEP_DESTDIR};
     if [[ -d ${VEP_DESTDIR}/variant_effect_predictor && -e ${VEP_DESTDIR}/variant_effect_predictor/INSTALL.pl ]]; then
         if [[ ${INSTALL_VEP} == 1 ]]; then
             echo "WARNING: during VEP installation, consider downloading cache but not the Ensembl/BioPerl API subset and the fasta file(s), which may not work well with some VAX plugins. You can use the -i option to get full versions of the Perl modules."
@@ -417,7 +420,7 @@ if [[ ${VEP_VERSION} != 0 ]]; then
     #full Ensembl Perl API and BioPerl
     if [[ ${INSTALL_ENSEMBL_API} == 1 ]]; then
         echo;
-        log "downloading Ensembl Perl API version ${VEP_VERSION} to ${ENSEMBL_API_DIR}";
+        log "downloading Ensembl Perl API version ${ENSEMBL_VERSION} to ${ENSEMBL_API_DIR}";
         this_dir=$(pwd);
         if [ -d ${ENSEMBL_API_DIR} ]; then
             log "deleting existing ${ENSEMBL_API_DIR}."
@@ -426,9 +429,9 @@ if [[ ${VEP_VERSION} != 0 ]]; then
         mkdir -p ${ENSEMBL_API_DIR};
         cd ${VEP_DESTDIR};
         rm ${VEP_DESTDIR}/ensembl;
-        ln -s ensembl-${VEP_VERSION} ensembl;
+        ln -s ensembl-${ENSEMBL_VERSION} ensembl;
         cd ${ENSEMBL_API_DIR};
-        cvs -d :pserver:cvsuser@cvs.sanger.ac.uk:/cvsroot/ensembl checkout -r branch-ensembl-${VEP_VERSION} ensembl-api;
+        cvs -d :pserver:cvsuser@cvs.sanger.ac.uk:/cvsroot/ensembl checkout -r branch-ensembl-${ENSEMBL_VERSION} ensembl-api;
         cd ${this_dir};
         
         echo;
@@ -758,7 +761,7 @@ if [[ ${INSTALL_DB} == 1 ]]; then
     AND COALESCE(u.value, '') <> ''
     ORDER BY u.topic;
     END\$\$
-    DELIMITER \$\$;";
+    DELIMITER ;";
     
     log "creating enst2uniprot_feature stored procedure";
     ${MYSQL} -e "USE ${DATABASE};
