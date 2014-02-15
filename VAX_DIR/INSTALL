@@ -383,7 +383,7 @@ if [[ ${INSTALL_DB} == 1 ]]; then
     log "creating database ${DATABASE}";
     ${MYSQL} -e  "CREATE DATABASE ${DATABASE};";
     log "granting all permissions on ${DATABASE} to ${VAX_USER} from anywhere with password ${VAX_PW}";
-    ${MYSQL} -e  "GRANT ALL ON ${DATABASE}.* TO '${VAX_USER}'@'%' IDENTIFIED BY '${VAX_PW}';";
+    ${MYSQL} -e  "GRANT ALL ON ${DATABASE}."'*'" TO '${VAX_USER}'@'%' IDENTIFIED BY '${VAX_PW}';";
 fi
 
 ################################################################################
@@ -448,6 +448,8 @@ if [[ ${ENSEMBL_VERSION} != 0 ]]; then
         cd ${BIOPERL_DIR};
         git clone git://github.com/bioperl/bioperl-live.git ${BIOPERL_DIR};
         cd ${BIOPERL_DIR};
+        #get list of BioPerl versions
+        #git tag -l
         git checkout ${BIOPERL_VERSION};
         cd ${this_dir};
     fi
@@ -648,7 +650,7 @@ EOF
         ${MYSQL} -e "CREATE SCHEMA IF NOT EXISTS fathmm";
         
         log "importing FATHMM database"
-        ${MYSQL} -e "GRANT SELECT ON fathmm.* TO '${VAX_USER}'@'%' IDENTIFIED BY '${VAX_PW}'";
+        ${MYSQL} -e "GRANT SELECT ON fathmm."'*'" TO '${VAX_USER}'@'%' IDENTIFIED BY '${VAX_PW}'";
         gunzip < ${FATHMM_DIR}/fathmm-v*.SQL.gz | ${MYSQL} -Dfathmm;
     
         log "creating ${PLUGINS_DIR}/fathmm"

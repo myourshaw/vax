@@ -123,7 +123,7 @@ sub new {
         Condel => ['Condel'],
         Conservation => ['Conservation'],
         FATHMM => ['FATHMM'],
-        GO => ['GO'], #this will be put in the GO_VEP column to avoid conflict with the UniProt GO
+        GO => ['GO'], #this may need to be put in the GO_VEP column to avoid conflict with the UniProt GO
         Grantham => ['Grantham'],
         dbNSFP => [],
     );
@@ -132,7 +132,6 @@ sub new {
     foreach my $plugin (@plugins) {
         my $plugin_type = Scalar::Util::blessed($plugin);
         if (exists($plugin_headers{$plugin_type})) {
-            my @foo = @{$plugin_headers{$plugin_type}};
             if (scalar(@{$plugin_headers{$plugin_type}} == 0)) {
                 if ($plugin_type eq 'dbNSFP') {
                     @{$plugin_headers{$plugin_type}} = keys %{$plugin->{cols}};
@@ -197,19 +196,20 @@ sub get_header_info {
     
     #define ordering of new extra output columns
     my @Extra_cols_order= qw(
-        ENSP
+        SYMBOL
+        SYMBOL_SOURCE
         CANONICAL
+        ENSP
         CCDS
         HGVSc
         HGVSp
-        SYMBOL
         Conservation
-        SIFT
-        SIFT_prediction
-        SIFT_score
         PolyPhen
         PolyPhen_prediction
         PolyPhen_score
+        SIFT
+        SIFT_prediction
+        SIFT_score
         Condel
         Condel_prediction
         Condel_score
