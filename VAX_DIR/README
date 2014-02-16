@@ -7,7 +7,7 @@ structure.
 REFERENCE
 
 Yourshaw M et al. Rich Annotation of DNA Sequencing Variants by Leveraging the Ensembl Variant Effect Predictor with
-Plugins
+Plugins, Briefings in Bioinformatics doi:10.1093/bib/bbu008
 
 QUICKSTART (assumes preexisting intall of VEP and all prerequisites)
 
