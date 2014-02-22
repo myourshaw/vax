@@ -123,7 +123,7 @@ def list_files(pathnames):
     return sorted(set(flatten([glob(os.path.expanduser(os.path.expandvars(p))) for p in pathnames])))
 
 def unglob(globs,sort_unique=True):
-    if isinstance(globs, str):
+    if isinstance(globs, basestring):
         globs = [globs]
     if sort_unique:
         return sorted(set(flatten([glob(os.path.expanduser(os.path.expandvars(p))) for p in globs]))) if globs and isinstance(globs, (list, tuple, set)) else []
@@ -167,7 +167,7 @@ def flatten(l, ltypes=(list, tuple)):
     return ltype(l)
 
 def file_exists(file_path):
-	if isinstance(file_path, str) and os.path.isfile(file_path):
+	if isinstance(file_path, basestring) and os.path.isfile(file_path):
 		try:
 			open(file_path)
 			return True
